@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useApp } from '../../context/AppContext'
 
 export default function VendorSignup() {
-  const { addVendor } = useApp()
+  const { addVendor ,data} = useApp()
 
   const [form, setForm] = useState({
     company: '',
@@ -28,37 +28,45 @@ export default function VendorSignup() {
   }
 
   function submit(e) {
-    e.preventDefault()
-    setError('')
+  e.preventDefault()
+  setError('')
 
-    if (!form.company.trim())
-      return setError('Company name is required')
+  if (!form.company.trim())
+    return setError('Company name is required')
 
-    if (!form.contact.trim())
-      return setError('Contact person is required')
+  if (!form.contact.trim())
+    return setError('Contact person is required')
 
-    if (!form.email.trim())
-      return setError('Email is required')
+  if (!form.email.trim())
+    return setError('Email is required')
 
-    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email))
-      return setError('Enter a valid email')
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email))
+    return setError('Enter a valid email')
 
-    addVendor(form)
+  // ✅ CHECK inside data.vendors
+  const isExist = data.vendors.some(
+    (v) => v.email.toLowerCase() === form.email.toLowerCase()
+  )
 
-    alert(
-      'Signup submitted. You will receive approval notification from admin.'
-    )
-
-    setForm({
-      company: '',
-      contact: '',
-      email: '',
-      phone: '',
-      bank: '',
-      account: '',
-      docs: [],
-    })
+  if (isExist) {
+    return setError('Account already exists with this email')
   }
+
+  // ✅ Only new email allowed
+  addVendor(form)
+
+  alert('Signup submitted successfully')
+
+  setForm({
+    company: '',
+    contact: '',
+    email: '',
+    phone: '',
+    bank: '',
+    account: '',
+    docs: [],
+  })
+}
 
   return (
     <div className=" bg-gray-50 flex items-center justify-center p-4">

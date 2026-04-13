@@ -75,7 +75,7 @@ export default function VendorLogin() {
         <form onSubmit={submit} className="space-y-4">
 
           <input
-            placeholder="Email or Company name"
+            placeholder="enter register Email "
             value={identifier}
             onChange={(e) => setIdentifier(e.target.value)}
             className="w-full border rounded-lg px-3 py-2"
